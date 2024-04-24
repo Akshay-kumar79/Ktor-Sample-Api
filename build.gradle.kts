@@ -1,4 +1,3 @@
-
 val ktor_version: String by project
 val kotlin_version: String by project
 val logback_version: String by project
@@ -11,6 +10,7 @@ plugins {
 
 group = "akshaw.com"
 version = "0.0.1"
+val mainClassName = "akshaw.com.ApplicationKt"
 
 application {
     mainClass.set("akshaw.com.ApplicationKt")
@@ -37,4 +37,15 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:$logback_version")
     testImplementation("io.ktor:ktor-server-tests-jvm")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
+}
+
+tasks.register<Jar>("fatJar") {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    manifest {
+        attributes("Main-Class" to mainClassName)
+    }
+    from(configurations.runtimeClasspath.get().map {
+        if (it.isDirectory) it else zipTree(it)
+    })
+    with(tasks.jar.get())
 }
