@@ -17,7 +17,7 @@ version = "0.0.1"
 val mainClassName = "akshaw.com.ApplicationKt"
 
 application {
-    mainClass.set("akshaw.com.ApplicationKt")
+    mainClass.set(mainClassName)
 
     val isDevelopment: Boolean = project.ext.has("development")
     applicationDefaultJvmArgs = listOf("-Dio.ktor.development=$isDevelopment")
@@ -41,22 +41,15 @@ dependencies {
     implementation("org.jetbrains.exposed:exposed-core:0.41.1")
     implementation("org.jetbrains.exposed:exposed-jdbc:0.41.1")
     implementation("com.h2database:h2:2.1.214")
+    implementation("mysql:mysql-connector-java:8.0.33")
     implementation("io.ktor:ktor-server-netty-jvm")
     implementation("ch.qos.logback:logback-classic:$logback_version")
     testImplementation("io.ktor:ktor-server-tests-jvm")
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit:$kotlin_version")
-}
 
-//tasks.register<Jar>("fatJar") {
-//    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
-//    manifest {
-//        attributes("Main-Class" to mainClassName)
-//    }
-//    from(configurations.runtimeClasspath.get().map {
-//        if (it.isDirectory) it else zipTree(it)
-//    })
-//    with(tasks.jar.get())
-//}
+    implementation("org.mongodb:mongodb-driver-kotlin-coroutine:5.0.0")
+    implementation("org.mongodb:bson-kotlinx:5.0.0")
+}
 
 configure<AppEngineAppYamlExtension> {
     stage {
